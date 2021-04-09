@@ -34,8 +34,8 @@ class Patient(models.Model):
     def __str__(self):
         return self.firstname+" "+self.lastname
 
-    
-    
+
+
 class Appointment(models.Model):
 
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE, related_name='appointment_patient')
@@ -49,3 +49,6 @@ class Appointment(models.Model):
     def __str__(self):
         return  '%s  with %s at %s ' % ( self.patient.__str__() , self.doctor.__str__(),self.appointmentime )
 
+# hass = Appointment.objects.get()
+# hass.delete()
+# # print("hassan = ")
