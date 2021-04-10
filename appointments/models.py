@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 
 
 
@@ -12,11 +12,13 @@ class Doctor(models.Model):
         ("Cancer", "Cancer"),
         ("Psychiatric" , "Psychiatric")
     ]
+    # user = models.OneToOneField(User, on_delete=models.CASCADE)
     firstname =models.CharField(max_length=200)
     lastname = models.CharField(max_length=200)
     address = models.CharField(max_length=200, null= True)
     mobile = models.CharField(max_length=100,null=True)
     department= models.CharField(max_length=100, choices= Departments)
+    status = models.BooleanField(default=True)
 
     def __str__(self):
         return "{} ({})".format(self.firstname+" "+self.lastname, self.department)
@@ -25,12 +27,14 @@ class Doctor(models.Model):
 
 class Patient(models.Model):
 
+    # user = models.OneToOneField(User, on_delete=models.CASCADE)
     firstname =models.CharField(max_length=200)
     lastname = models.CharField(max_length=200)
     address = models.CharField(max_length=40,  null= True)
     mobile = models.CharField(max_length=20,null= True)
-    symptoms = models.CharField(max_length=100,null=True)
-
+    chronic_deseases = models.CharField(max_length=100,null=True)
+    unimmune_to = models.TextField(max_length=300, null= True)
+    status = models.BooleanField(default=True)
     def __str__(self):
         return self.firstname+" "+self.lastname
 
@@ -42,13 +46,16 @@ class Appointment(models.Model):
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE, related_name='appointment_doctor')
     patientName=models.CharField(max_length=40,null=True)
     doctorName =models.CharField(max_length=40,null=True)
-    appointmentime = models.DateTimeField()
-    description=models.TextField(max_length=500)
-    status=models.BooleanField(default=True)
+    date = models.DateField(null=True)
+    time = models.fields.TimeField(null=True)
+    description=models.TextField(max_length=500, null=True)
+    confirmed=models.BooleanField(default= False)
 
     def __str__(self):
         return  '%s  with %s at %s ' % ( self.patient.__str__() , self.doctor.__str__(),self.appointmentime )
 
+
+
 # hass = Appointment.objects.get()
 # hass.delete()
-# # print("hassan = ")
+# print("hassan = ")
