@@ -7,8 +7,10 @@
 <body>
         <div>
             <form action="appointment/" method="POST">
+                {% for user in users %}
+                    {{ user.username }}
+                {% endfor %}
 
-                {{ form }}
 
                 <input type="submit" value="Submit">
             </form>

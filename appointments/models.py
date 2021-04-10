@@ -19,6 +19,7 @@ class Doctor(models.Model):
     mobile = models.CharField(max_length=100,null=True)
     department= models.CharField(max_length=100, choices= Departments)
     status = models.BooleanField(default=True)
+    zoom_link = models.CharField(max_length= 300, null= True)
 
     def __str__(self):
         return "{} ({})".format(self.firstname+" "+self.lastname, self.department)
@@ -35,6 +36,7 @@ class Patient(models.Model):
     chronic_deseases = models.CharField(max_length=100,null=True)
     unimmune_to = models.TextField(max_length=300, null= True)
     status = models.BooleanField(default=True)
+
     def __str__(self):
         return self.firstname+" "+self.lastname
 
