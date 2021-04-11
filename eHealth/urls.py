@@ -21,6 +21,8 @@ urlpatterns = [
 
     path('admin/', admin.site.urls),
     path('appointment/' , include('appointments.urls')) ,
+    url(r'^', include('accountpage.urls')),
+    url(r'^', include('listofdoctors.urls')),
     url(r'^',include('home.urls')),
 
 ]
