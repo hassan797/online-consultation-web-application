@@ -2,6 +2,8 @@
 
 Clone to your computer, modify, commit changes.
 
+Install requirements by running `pip install -r requirements.txt`
+
 ## Usage:
 ### To create app
 `python manage.py startapp "appname"`

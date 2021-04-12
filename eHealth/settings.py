@@ -37,9 +37,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_filters',
     #Add apps here:
     'home.apps.HomeConfig',
-    'appointments'
+    'appointments.apps.AppointmentsConfig',
+    'accountpage.apps.AccountpageConfig',
+    'listofdoctors.apps.ListofdoctorsConfig',
 ]
 
 MIDDLEWARE = [

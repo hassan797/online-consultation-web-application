@@ -54,3 +54,7 @@ def ViewAppointments( request):
         pass
 
     return render(request , 'Appointments.html' ,{'users' : users })
+
+def ViewCalendar(request, _id):
+
+    return render(request , 'Calendar.html' ,{ })
