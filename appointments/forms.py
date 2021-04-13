@@ -25,22 +25,22 @@ class PatientForm(forms.ModelForm):
         fields = ['address', 'mobile', 'status', 'chronic_deseases', 'unimmune_to']
 
 
-class book(forms.ModelForm):
-    # appointment_date= DateTimeField(widget = DateInput(format='%Y-%m-%d'),
-    #                                   input_formats=('%Y-%m-%d',),
-    #                                   required=False)
-    class Meta:
-        model = Appointment1
-        fields = ("name", "contact_no", "specialist", "date")
-        widgets = {
-            'date': forms.TextInput(attrs={'placeholder': 'yyyy-mm-dd'})
-        }
+# class book(forms.ModelForm):
+#     # appointment_date= DateTimeField(widget = DateInput(format='%Y-%m-%d'),
+#     #                                   input_formats=('%Y-%m-%d',),
+#     #                                   required=False)
+#     class Meta:
+#         model = Appointment1
+#         fields = ("name", "contact_no", "specialist", "date")
+#         widgets = {
+#             'date': forms.TextInput(attrs={'placeholder': 'yyyy-mm-dd'})
+#         }
 
 class Appointmentform(forms.ModelForm):
     # appointment_date= DateTimeField(widget = DateInput(format='%Y-%m-%d'),
     #                                   input_formats=('%Y-%m-%d',),
     #                                   required=False)
-    doctorId = forms.ModelChoiceField(queryset=models.Doctor.objects.all().filter(status=True),
+    doctorId = forms.ModelChoiceField(queryset= Doctor.objects.all().filter(status=True),
                                       to_field_name="firstname")
 
     # patientId = forms.ModelChoiceField(queryset=models.Patient.objects.all().filter(status=True), to_field_name="user_id")
