@@ -12,7 +12,7 @@ class Doctor(models.Model):
         ("Cancer", "Cancer"),
         ("Psychiatric" , "Psychiatric")
     ]
-    # user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     firstname =models.CharField(max_length=200)
     lastname = models.CharField(max_length=200)
     address = models.CharField(max_length=200, null= True)
@@ -28,7 +28,7 @@ class Doctor(models.Model):
 
 class Patient(models.Model):
 
-    # user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     firstname =models.CharField(max_length=200)
     lastname = models.CharField(max_length=200)
     address = models.CharField(max_length=40,  null= True)
@@ -41,6 +41,19 @@ class Patient(models.Model):
         return self.firstname+" "+self.lastname
 
 
+class PreAppointment(models.Model):
+
+    Departments = [
+        ("Cardiology", "Cardiology"),
+        ("Neurology", "Neurology"),
+        ("Dermatology", "Dermatology"),
+        ("Cancer", "Cancer"),
+        ("Psychiatric", "Psychiatric")
+    ]
+
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE, related_name='appointment_patient')
+    department = models.CharField(max_length=50, choices=Departments)
+
 
 class Appointment(models.Model):
 
@@ -51,10 +64,10 @@ class Appointment(models.Model):
     date = models.DateField(null=True)
     time = models.fields.TimeField(null=True)
     description=models.TextField(max_length=500, null=True)
-    confirmed=models.BooleanField(default= False)
+    confirmed = models.BooleanField(default= False)
 
     def __str__(self):
-        return  '%s  with %s at %s ' % ( self.patient.__str__() , self.doctor.__str__(),self.appointmentime )
+        return  '%s  with %s AT %s ' % ( self.patient.__str__() , self.doctor.__str__(),str(self.time)  )
 
 
 
