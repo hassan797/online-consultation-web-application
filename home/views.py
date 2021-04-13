@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.template import loader
 from .forms import Register
@@ -23,6 +23,7 @@ def HomePage(request):
 	return render(request, 'HomePage.html')
 
 def register(request):
+
 	if request.method == 'POST':
 		form = Register(request.POST)
 		if form.is_valid():
@@ -38,10 +39,11 @@ def register(request):
 			# print("type of S:",type(S))
 			# getJWToken()
 			#Not run:
-			return render(request, 'register.html', {'form': form,'S':S})
+			# return render(request, 'register.html', {'form': form,'S':S})
+			return redirect("HomePage")
 	else:
 		form = Register()
-	S=Account.objects.all()
+	S= Account.objects.all()
 	# print("type of S:",type(S))
 	return render(request, 'register.html', {'form': form,'S':S})
 
