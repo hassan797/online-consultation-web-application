@@ -1,9 +1,9 @@
 from django.shortcuts import render
-
 from django.http import HttpResponse
 from django.template import loader
 from .forms import Register
 from .models import Account
+
 # Create your views here.
 
 #region Helper functions
@@ -18,6 +18,9 @@ def hashPassword(plain):
 
 def index(request):
 	return render(request,'index.html')
+
+def HomePage(request):
+	return render(request, 'HomePage.html')
 
 def register(request):
 	if request.method == 'POST':

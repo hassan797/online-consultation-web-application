@@ -25,4 +25,5 @@ urlpatterns = [
     url(r'^', include('listofdoctors.urls')),
     url(r'^',include('home.urls')),
 
+
 ]
