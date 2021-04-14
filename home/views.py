@@ -56,7 +56,7 @@ def login(request):
 
 
 def HomePage(request):
-    print(request.session['id'])
+    # print(request.session['id'])
     return render(request, 'HomePage.html')
 
 def register(request):
