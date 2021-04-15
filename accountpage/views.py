@@ -10,16 +10,22 @@ def getUser(request, _id, isdoctor): #Get user page with info to edit
 	try: #avoid invalid id error
 		if (isdoctor==1):
 			user = Doctor.objects.get(id=_id)
-			form = DoctorForm(request.POST, instance=user)
+			form = DoctorForm(instance=user)
 		elif (isdoctor==0):
 			user = Patient.objects.get(id=_id)
-			form = PatientForm(request.POST, instance=user)
+			form = PatientForm(instance=user)
 		else:
 			return redirect('/')
 		# global doctorselected
 		# doctorselected=False
 
 		if request.method == 'POST': #Edit User (editUser)
+			if isdoctor==1:
+				form = DoctorForm(request.POST, instance=user)
+			elif isdoctor==0:
+				form = PatientForm(request.POST, instance=user)
+			else:
+				return redirect('/')
 			if form.is_valid():
 				form.save()
 				return render(request, 'account.html', {'form': form } )
