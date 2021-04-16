@@ -1,10 +1,11 @@
 from django.urls import path, include
 from django.conf.urls import url
-from .views import ViewAppointments, ViewCalendar
+import views
+# from .views import ViewAppointments, ViewCalendar
 
 urlpatterns = [
-    path('', ViewAppointments),
-    path("appointment/", ViewAppointments),
-    path("calendar/<int:_id>", ViewCalendar),
+    path('', views.ViewAppointments),
+    path("appointment/", views.ViewAppointments),
+    path("calendar/<int:doctorid>",views.BookAppointment ),
 
 ]
