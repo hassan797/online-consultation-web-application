@@ -60,7 +60,7 @@ class Appointment(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE, related_name='appointment_patient')
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE, related_name='appointment_doctor')
     # patientName=models.CharField(max_length=40,null=True)
-    # doctorName =models.CharField(max_length=40,null=True)
+    doctorName =models.CharField(max_length=40,null=True)
     date = models.DateField(null=True)
     time = models.fields.TimeField(null=True)
     description=models.TextField(max_length=500, null=True)
