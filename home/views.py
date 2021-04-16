@@ -20,7 +20,8 @@ def hashPassword(plain):
 
 
 def index(request):
-    return render(request,'index.html')
+    # return render(request,'index.html')
+    return render(request, 'HomePage.html')
 
 def login(request):
     if request.method == 'POST':

@@ -8,6 +8,7 @@
 </head>
 
 <body>
+    <a href='/' style="padding: 3%;">Home</a>
 <div class="mx-auto" style="width: 250px;">
     <h1>Account:</h1>
 </div>
@@ -16,10 +17,11 @@
 <form method="POST" class="row g-3" style="padding-left: 4%; max-width: 600px;">
     {% csrf_token %}
     {{ form  }} <!--From froms.py (rendered in views.py)-->
-    <div style="display: flex; justify-content: space-between; margin-left: -1%;">
+    <div style="display: flex; justify-content: space-between; margin-left: -1%;  margin-bottom: 3%;">
         <button class="btn btn-primary" style="width: 100px;" type="submit">
             Update
         </button>
+        <a class="btn btn-danger" style="" href="/delete/{{id}}/{{isdoctor}}">Delete Account</a>
     </div>
 </form>
 

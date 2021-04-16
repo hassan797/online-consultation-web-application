@@ -1,7 +1,6 @@
 
 <!DOCTYPE html>
-{% load static %}
-<html lang="en">
+<html>
 <head>
 <title>eHealth home</title>
 <meta charset="UTF-8">
@@ -111,20 +110,21 @@ input[type=submit]{
 <body>
 
 <!-- Header -->
-<img src= 'logo.jpg'  alt="eHealth Logo"  width="250px" height="60px" style="padding: 20px 20px;">
+{% load static %}
+<img src="{% static 'static/logo.jpg' %}" alt="eHealth Logo"  width="250px" height="60px" style="padding: 20px 20px;">
 
 <div class="header" >
-  <a href="Signup" >Sign up </a> &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-  <a href="Login" >Log in</a>
+  <a href="register" >Sign up </a> &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="login" >Log in</a>
+</div>
 
 
 <!-- Navigation Bar -->
 <div class="navbar" >
-  <a href="/HomePage">Home</a>
-  <a href=" ">About</a>
-  <a href="/listofdoctors">Doctors</a>
-  <a href=" ">Contact us</a>
-
+  <a href="/">Home</a>
+  <a href="">About</a>
+  <a href="/doctors">Doctors</a>
+  <a href="">Contact us</a>
 </div>
 
 <hr style="height: 0.5px; background-color: lightgrey; margin-bottom: 0%;">
@@ -141,10 +141,13 @@ input[type=submit]{
             <input type="submit"  value="Book Appointment"  />
             </form>
 </div> -->
-<a class="btn btn-info btn-sm" href="/listofdoctors">Book Appointment</a>
+<a href="/account/1/1">My doctor account</a>
+<a href="/account/1/0">My patient account</a>
+<a class="btn btn-info btn-sm" href="/doctors">Book Appointment</a>
 
 <!-- right side -->
-<img src='dr.jpg'  alt="eHealth pic"  width="46%" height="420px" style=" float: right; padding: 25px 22px;">
+{% load static %}
+<img src="{% static 'static/dr.jpg' %}" alt="eHealth pic"  width="46%" height="420px" style=" float: right; padding: 25px 22px;">
 
 
 <!-- footer -->
@@ -155,5 +158,5 @@ input[type=submit]{
 </div>
 
 
-    </body>
+</body>
 </html>

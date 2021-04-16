@@ -10,21 +10,41 @@ def getUser(request, _id, isdoctor): #Get user page with info to edit
 	try: #avoid invalid id error
 		if (isdoctor==1):
 			user = Doctor.objects.get(id=_id)
-			form = DoctorForm(request.POST, instance=user)
+			form = DoctorForm(instance=user)
 		elif (isdoctor==0):
 			user = Patient.objects.get(id=_id)
-			form = PatientForm(request.POST, instance=user)
+			form = PatientForm(instance=user)
 		else:
 			return redirect('/')
 		# global doctorselected
 		# doctorselected=False
 
 		if request.method == 'POST': #Edit User (editUser)
+			if isdoctor==1:
+				form = DoctorForm(request.POST, instance=user)
+			elif isdoctor==0:
+				form = PatientForm(request.POST, instance=user)
+			else:
+				return redirect('/')
 			if form.is_valid():
 				form.save()
-				return render(request, 'account.html', {'form': form } )
+				return render(request, 'account.html', {'form': form, 'id':_id, 'isdoctor':isdoctor } ) #NOTE: VARIABLES IN HTML CANNOT START WITH '_' SO NO "_id"
 
 		else: # See User data. Logically renders first since first accessed thorugh GET
-			return render(request, 'account.html', {'form': form } )
+			return render(request, 'account.html', {'form': form, 'id':_id, 'isdoctor':isdoctor } )
 	except:
 		return redirect('/')
+
+def deleteUser(request, _id, isdoctor): #API that renders back index
+	try: #avoid invalid id error
+		if isdoctor==1:
+			user = Doctor.objects.get(id=_id)
+		elif isdoctor==0:
+			user = Patient.objects.get(id=_id)
+		else:
+			return redirect('/')
+		user.delete()
+	except:
+		pass
+
+	return redirect('/')

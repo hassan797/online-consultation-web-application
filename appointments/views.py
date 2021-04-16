@@ -55,6 +55,24 @@ def ViewAppointments( request):
 
     return render(request , 'Appointments.html' ,{'users' : users })
 
-def ViewCalendar(request, _id):
+
+def BookAppointment(request, doctorID) :
+
+    userid = request.session['user_id']
+    doctor_id = doctorID
+    if request.method =='POST':
+        pass
+
+    return 2
+
+
+
+
+
+
+
+
+
+def ViewCalendar(request, id):
 
     return render(request , 'Calendar.html' ,{ })
