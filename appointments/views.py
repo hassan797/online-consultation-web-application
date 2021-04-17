@@ -2,9 +2,11 @@ import django.http
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
 from django.template.context_processors import csrf
+
+from . import  models
 from .forms import *
 from .models import *
 from datetime import datetime
@@ -58,12 +60,30 @@ def ViewAppointments( request):
 
 def BookAppointment(request, doctorID) :
 
-    userid = request.session['user_id']
-    doctor_id = doctorID
-    if request.method =='POST':
-        pass
 
-    return 2
+    form = Appointmentform()
+    if request.method =='POST':
+
+        userid = request.session['id']
+        doctor_id = doctorID
+        date = request.POST.get('date')
+        time = request.POST.get('time')
+        description = request.POST.get('description')
+        link = Doctor.objects.filter(id = doctor_id)
+        apppointment2 = Appointment(request.POST)
+        apppointment2.patient= Patient.objects.filter(pk = userid)
+        apppointment2.doctor = Doctor.objects.filter(pk = doctor_id)
+        apppointment2.save()
+        # apointment = models.Appointment.objects.create( patient = Patient.objects.filter(pk = userid),
+        #                                                 doctor= Doctor.objects.filter(pk = doctor_id),
+        #                                                 doctorname = Doctor.objects.filter(pk = doctor_id).name,
+        #                                                 date = date,
+        #                                                 time = time,
+        #                                                 description= description )
+        # apointment.save()
+        return HttpResponse("<h1> Your appointment has been succesfully booked !</h1>")
+
+    return render(request, '', {'form' : form })
 
 
 

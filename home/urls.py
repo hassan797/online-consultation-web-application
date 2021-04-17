@@ -7,6 +7,6 @@ urlpatterns = [
     url(r'^$', views.HomePage),
     url(r'^Login',views.login),
     url(r'^Signup', views.register),
-    #     url(r'^logout',views.logout),
+    # url(r'^logout',views.logout),
 
 ]
