@@ -58,32 +58,36 @@ def ViewAppointments( request):
     return render(request , 'Appointments.html' ,{'users' : users })
 
 
-def BookAppointment(request, doctorID) :
+def BookAppointment(request) :
 
 
     form = Appointmentform()
+    # drfname = Doctor.objects.filter(pk=doctorid)[0].firstname
+    # drlname = Doctor.objects.filter(pk=doctorid)[0].lastname
+    # name = drfname + " " + drlname
+
     if request.method =='POST':
 
-        userid = request.session['id']
-        doctor_id = doctorID
+        userid = 1
+        doctor_id = 1
         date = request.POST.get('date')
         time = request.POST.get('time')
         description = request.POST.get('description')
         link = Doctor.objects.filter(id = doctor_id)
         apppointment2 = Appointment(request.POST)
-        apppointment2.patient= Patient.objects.filter(pk = userid)
-        apppointment2.doctor = Doctor.objects.filter(pk = doctor_id)
+        apppointment2.patient= Patient.objects.filter(pk = userid)[0]
+        apppointment2.doctor = Doctor.objects.filter(pk = doctor_id)[0]
         apppointment2.save()
         # apointment = models.Appointment.objects.create( patient = Patient.objects.filter(pk = userid),
         #                                                 doctor= Doctor.objects.filter(pk = doctor_id),
-        #                                                 doctorname = Doctor.objects.filter(pk = doctor_id).name,
+        #                                                 doctorname = name,
         #                                                 date = date,
         #                                                 time = time,
         #                                                 description= description )
         # apointment.save()
         return HttpResponse("<h1> Your appointment has been succesfully booked !</h1>")
-
-    return render(request, '', {'form' : form })
+    return render(request, 'Bookappointment.html', {'form': form, 'drname': 'ali assi'})
+    # return HttpResponse(form)
 
 
 

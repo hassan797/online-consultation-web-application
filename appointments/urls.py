@@ -5,7 +5,8 @@ from . import views
 
 urlpatterns = [
     path('', views.ViewAppointments),
-    path("appointment/", views.ViewAppointments),
-    path("calendar/<int:doctorid>",views.BookAppointment ),
+    path("booksystem/<int:doctorid>", views.BookAppointment),
+    path("booksystem/", views.BookAppointment, name = 'booker')
+    # path("calendar/<int:doctorid>",views.BookAppointment ),
 
 ]
