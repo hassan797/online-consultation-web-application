@@ -50,11 +50,12 @@ def logoutuser(request):
 def doctorAppointments( request):
 
     # doctorid = request.session['id']
-    doctorID = 1
+    doctorID = 3
     doctor =  Doctor.objects.get(pk = doctorID)
     print("INFO here :" , doctor.firstname, doctor.lastname, doctor.mobile)
     appointments = Appointment.objects.filter(doctor_id = doctorID , date__gte = datetime.today()).order_by('date')
 
+    print(len(appointments))
     if request.method== 'POST':
         if request.POST.get("action")== "confirm":
             confirmAppointment(request)
@@ -73,15 +74,15 @@ def doctorAppointments( request):
 
 
 
-def patientAppointments( request):
+def patientAppointments( request= None):
 
     # patientid = request.session['id']
     patientID = 1
     patient =  Patient.objects.get(pk = patientID)
     print("INFO here :" , patient.firstname, patient.lastname, patient.mobile)
-    appointments = Appointment.objects.filter(patient_id = patientID , date__gte = datetime.today()).order_by('date')
-
+    appointments = Appointment.objects.filter(date__gte = datetime.today()).order_by('date')
     return render(request , 'Appointments.html' ,{'appointments' : appointments})
+
 
 
 
@@ -128,11 +129,12 @@ def confirmAppointment(request) :
 
     # doctorid = request.session['id']
     doctorID = 1
-    appointments = Appointment.objects.filter(doctor_id=doctorID, date__gte=datetime.today()).order_by('date')
     appointmentid = request.POST.get('appid')
     appointment = Appointment.objects.get(pk = appointmentid)
     appointment.confirmed = True
     appointment.save()
+    print("Appointment confirmed !")
+    appointments = Appointment.objects.filter(doctor_id=doctorID, date__gte=datetime.today()).order_by('date')
     return render(request , 'Appointments.html' ,{'appointments' : appointments})
 
 

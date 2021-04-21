@@ -6,20 +6,23 @@
 </head>
 <body>
         <div>
-            <form action="appointment/" method="POST">
-                {% csrf_token %}
-                {%  for appt in appointments %}
 
-                   <p>{{ appt.Patient.firstname }} {{ appt.Patient.lastname }} At {{ appt.Date }} , {{ appt.Time }}</p>
+            {%  for appt in appointments %}
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <p>{{ appt.patientname }} With {{ appt.doctorname }} At {{ appt.date }} , {{ appt.time }}</p>
                     {% if appt.confirmed %}
                         <strong> Confirmed</strong>
+                        <input type="submit" name = "action" value="Cancel">
                     {% else %}
-                        <button> confirm </button>
+                        <input type="hidden" name="appid" value="{{ appt.id }}">
+                        <input type="submit" name = "action" value="confirm">
+                        <input type="submit" name = "action" value="Cancel">
                     {% endif %}
-                {% endfor %}
+                </form>
 
-                <input type="submit" name = "submitbtn">
-            </form>
+            {% endfor %}
+
         </div>
 </body>
 </html>
