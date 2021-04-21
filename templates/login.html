@@ -8,12 +8,11 @@
 </head>
 <body>
     <a href='/' style="padding: 3%;">Home</a>
-    
+
     <form method="POST">
         {% csrf_token %}
         {{ form  }} <!--From froms.py (rendered in views.py)-->
         <button type="submit">Log In</button>
-        
     </form>
 
     <h2> {{ error }} </h2>

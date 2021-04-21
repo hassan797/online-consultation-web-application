@@ -28,6 +28,7 @@ class Doctor(models.Model):
 
 class Patient(models.Model):
 
+
     user = models.OneToOneField(User, on_delete=models.CASCADE , null= True)
     firstname =models.CharField(max_length=200)
     lastname = models.CharField(max_length=200)
@@ -36,6 +37,7 @@ class Patient(models.Model):
     chronic_deseases = models.CharField(max_length=100,null=True)
     unimmune_to = models.TextField(max_length=300, null= True)
     status = models.BooleanField(default=True)
+
 
     def __str__(self):
         return self.firstname+" "+self.lastname

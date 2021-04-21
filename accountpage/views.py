@@ -3,16 +3,20 @@ from django.shortcuts import render
 from django.shortcuts import redirect #much better than return index(request) since No paramter collision
 from .forms import PatientForm, DoctorForm
 from .models import Doctor, Patient
-
+from django.contrib.auth.models import User
 # Create your views here.
 
 def getUser(request, _id, isdoctor): #Get user page with info to edit
+	print("Getting user maybe")
 	try: #avoid invalid id error
 		if (isdoctor==1):
-			user = Doctor.objects.get(id=_id)
+			p = User.objects.get(id=_id)
+			user = Doctor.objects.get(user=p)
 			form = DoctorForm(instance=user)
 		elif (isdoctor==0):
-			user = Patient.objects.get(id=_id)
+
+			p = User.objects.get(id=_id)
+			user = Patient.objects.get(user=p)
 			form = PatientForm(instance=user)
 		else:
 			return redirect('/')
