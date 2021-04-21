@@ -4,7 +4,7 @@ from . import views
 
 #MUST HAVE SAME NAME AS HTML TEMPLATES
 urlpatterns = [
-    url(r'^$', views.HomePage),
+    url(r'^$', views.HomePage , name= 'homepage' ),
     url(r'^Login',views.login),
     url(r'^Signup', views.register),
     # url(r'^logout',views.logout),

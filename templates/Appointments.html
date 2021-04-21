@@ -7,13 +7,18 @@
 <body>
         <div>
             <form action="appointment/" method="POST">
-                {{ users }}
-{#                {% for user in users %}#}
-{#                  <h2> client username = <strong> {{ user.username }} </strong> </h2>#}
-{#                {% endfor %}#}
+                {% csrf_token %}
+                {%  for appt in appointments %}
 
+                   <p>{{ appt.Patient.firstname }} {{ appt.Patient.lastname }} At {{ appt.Date }} , {{ appt.Time }}</p>
+                    {% if appt.confirmed %}
+                        <strong> Confirmed</strong>
+                    {% else %}
+                        <button> confirm </button>
+                    {% endif %}
+                {% endfor %}
 
-                <input type="submit" value="Submit">
+                <input type="submit" name = "submitbtn">
             </form>
         </div>
 </body>

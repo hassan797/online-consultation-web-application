@@ -6,9 +6,8 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
 from django.template.context_processors import csrf
 
-from . import  models
 from .forms import *
-from .models import *
+from .models import Doctor, Patient, Appointment
 from datetime import datetime
 from django.utils import timezone
 # Create your views here.
@@ -48,14 +47,42 @@ def logoutuser(request):
     return redirect("loginuser")
 
 
-def ViewAppointments( request):
+def doctorAppointments( request):
 
-    form1 = Appointmentform()
-    users = User.objects.all()
+    # doctorid = request.session['id']
+    doctorID = 1
+    doctor =  Doctor.objects.get(pk = doctorID)
+    print("INFO here :" , doctor.firstname, doctor.lastname, doctor.mobile)
+    appointments = Appointment.objects.filter(doctor_id = doctorID , date__gte = datetime.today()).order_by('date')
+
     if request.method== 'POST':
-        pass
+        if request.POST.get("action")== "confirm":
+            confirmAppointment(request)
 
-    return render(request , 'Appointments.html' ,{'users' : users })
+        elif request.POST.get("action")== "delete":                                  # if action is delete
+            appointmentid = request.POST.get('appid')
+            appointment = Appointment.objects.get(pk=appointmentid)
+            appointment.delete()
+
+    return render(request , 'Appointments.html' ,{'appointments' : appointments})
+
+# def edit_appointments(request):
+
+    # appointment =
+
+
+
+
+def patientAppointments( request):
+
+    # patientid = request.session['id']
+    patientID = 1
+    patient =  Patient.objects.get(pk = patientID)
+    print("INFO here :" , patient.firstname, patient.lastname, patient.mobile)
+    appointments = Appointment.objects.filter(patient_id = patientID , date__gte = datetime.today()).order_by('date')
+
+    return render(request , 'Appointments.html' ,{'appointments' : appointments})
+
 
 
 def BookAppointment(request) :
@@ -75,8 +102,12 @@ def BookAppointment(request) :
         description = request.POST.get('description')
         link = Doctor.objects.filter(id = doctor_id)
         apppointment2 = Appointment(request.POST)
-        apppointment2.patient= Patient.objects.filter(pk = userid)[0]
-        apppointment2.doctor = Doctor.objects.filter(pk = doctor_id)[0]
+        patient= Patient.objects.filter(pk = userid)[0]
+        doctor = Doctor.objects.filter(pk = doctor_id)[0]
+        apppointment2.patient = patient
+        apppointment2.doctor = doctor
+        apppointment2.patientname = patient.firstname +" " +patient.lastname
+        apppointment2.doctorname = "Dr. "+doctor.firstname +" " +doctor.lastname
         apppointment2.save()
         # apointment = models.Appointment.objects.create( patient = Patient.objects.filter(pk = userid),
         #                                                 doctor= Doctor.objects.filter(pk = doctor_id),
@@ -93,7 +124,26 @@ def BookAppointment(request) :
 
 
 
+def confirmAppointment(request) :
 
+    # doctorid = request.session['id']
+    doctorID = 1
+    appointments = Appointment.objects.filter(doctor_id=doctorID, date__gte=datetime.today()).order_by('date')
+    appointmentid = request.POST.get('appid')
+    appointment = Appointment.objects.get(pk = appointmentid)
+    appointment.confirmed = True
+    appointment.save()
+    return render(request , 'Appointments.html' ,{'appointments' : appointments})
+
+
+def cancelappointment(request, appointmentid):
+    # userid = request.session.get("userid")
+    # appid = request.POST.get("appid")
+    userid = 1
+    appid = appointmentid
+    appointment = Appointment.objects.get(pk=appid)
+    appointment.canceled = True
+    appointment.save()
 
 
 
