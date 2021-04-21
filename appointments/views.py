@@ -49,7 +49,7 @@ def logoutuser(request):
 
 def doctorAppointments( request):
 
-    # doctorid = request.session['id']
+    #doctorid = request.session['id']
     doctorID = 3
     doctor =  Doctor.objects.get(pk = doctorID)
     print("INFO here :" , doctor.firstname, doctor.lastname, doctor.mobile)
@@ -62,9 +62,9 @@ def doctorAppointments( request):
         elif request.POST.get("action")== "Cancel":                                  # if action is cancel
             cancelappointment(request)
 
-    appointments = Appointment.objects.filter(doctor_id=doctorID, date__gte=datetime.today()).order_by('date')
+    appointments = Appointment.objects.filter(doctor_id= doctorID, date__gte=datetime.today()).order_by('date')
     print(len(appointments))
-    return render(request , 'Appointments.html' ,{'appointments' : appointments})
+    return render(request , 'listappointments.html' ,{'appointments' : appointments})
 
 # def edit_appointments(request):
 
@@ -73,7 +73,7 @@ def doctorAppointments( request):
 
 
 
-def patientAppointments( request= None):
+def patientAppointments( request):
 
     # patientid = request.session['id']
     patientID = 1

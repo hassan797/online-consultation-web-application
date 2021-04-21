@@ -49,5 +49,5 @@ class Appointmentform(forms.ModelForm):
         fields = [  'doctorname', 'date', 'time', 'description']
         widgets = {
             'date': forms.DateInput(attrs={'placeholder': 'yyyy-mm-dd', 'type':'date'}),
-            'time' : forms.TimeInput()
+            'time' : forms.TimeInput(attrs={'type' : 'time'})
         }
