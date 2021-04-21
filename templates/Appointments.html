@@ -11,13 +11,23 @@
                 <form action="" method="POST">
                     {% csrf_token %}
                     <p>{{ appt.patientname }} With {{ appt.doctorname }} At {{ appt.date }} , {{ appt.time }}</p>
+
+                    <input type="hidden" name="appid" value="{{ appt.id }}">
+
                     {% if appt.confirmed %}
                         <strong> Confirmed</strong>
-                        <input type="submit" name = "action" value="Cancel">
+                        {% if not appt.canceled %}
+                            <input type="submit" name = "action" value="Cancel">
+                        {% else %}
+                            <strong> Canceled</strong>
+                        {% endif %}
                     {% else %}
-                        <input type="hidden" name="appid" value="{{ appt.id }}">
                         <input type="submit" name = "action" value="confirm">
-                        <input type="submit" name = "action" value="Cancel">
+                        {% if not appt.canceled %}
+                            <input type="submit" name = "action" value="Cancel">
+                        {% else %}
+                              <strong> Canceled</strong>
+                        {% endif %}
                     {% endif %}
                 </form>
 

@@ -53,18 +53,17 @@ def doctorAppointments( request):
     doctorID = 3
     doctor =  Doctor.objects.get(pk = doctorID)
     print("INFO here :" , doctor.firstname, doctor.lastname, doctor.mobile)
-    appointments = Appointment.objects.filter(doctor_id = doctorID , date__gte = datetime.today()).order_by('date')
 
-    print(len(appointments))
     if request.method== 'POST':
+
         if request.POST.get("action")== "confirm":
             confirmAppointment(request)
 
-        elif request.POST.get("action")== "delete":                                  # if action is delete
-            appointmentid = request.POST.get('appid')
-            appointment = Appointment.objects.get(pk=appointmentid)
-            appointment.delete()
+        elif request.POST.get("action")== "Cancel":                                  # if action is cancel
+            cancelappointment(request)
 
+    appointments = Appointment.objects.filter(doctor_id=doctorID, date__gte=datetime.today()).order_by('date')
+    print(len(appointments))
     return render(request , 'Appointments.html' ,{'appointments' : appointments})
 
 # def edit_appointments(request):
@@ -85,15 +84,12 @@ def patientAppointments( request= None):
 
 
 
-
 def BookAppointment(request) :
-
 
     form = Appointmentform()
     # drfname = Doctor.objects.filter(pk=doctorid)[0].firstname
     # drlname = Doctor.objects.filter(pk=doctorid)[0].lastname
     # name = drfname + " " + drlname
-
     if request.method =='POST':
 
         userid = 1
@@ -134,15 +130,13 @@ def confirmAppointment(request) :
     appointment.confirmed = True
     appointment.save()
     print("Appointment confirmed !")
-    appointments = Appointment.objects.filter(doctor_id=doctorID, date__gte=datetime.today()).order_by('date')
-    return render(request , 'Appointments.html' ,{'appointments' : appointments})
 
 
-def cancelappointment(request, appointmentid):
+def cancelappointment(request):
     # userid = request.session.get("userid")
     # appid = request.POST.get("appid")
     userid = 1
-    appid = appointmentid
+    appid = request.POST.get("appid")
     appointment = Appointment.objects.get(pk=appid)
     appointment.canceled = True
     appointment.save()
