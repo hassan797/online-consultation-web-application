@@ -113,10 +113,22 @@ input[type=submit]{
 
 <img src="{% static 'css/logo.jpg' %}" alt="eHealth Logo"  width="250px" height="60px" style="padding: 20px 20px;">
 
+
+{% if isloggedIn == 1 %} 
+<div class="header">
+    <a href="logout" >logout</a>
+</div>
+{% else %}
 <div class="header" >
   <a href="register" >Sign up </a> &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="login" >Log in</a>
 </div>
+{% endif %}
+
+
+
+
+
 
 
 <!-- Navigation Bar -->
@@ -141,8 +153,8 @@ input[type=submit]{
             <input type="submit"  value="Book Appointment"  />
             </form>
 </div> -->
-<a href="/account/1/1">My doctor account</a>
-<a href="/account/1/0">My patient account</a>
+<a href="/account/">My account</a>
+
 <a class="btn btn-info btn-sm" href="/doctors">Book Appointment</a>
 
 <!-- right side -->

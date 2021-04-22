@@ -1,24 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
 </head>
+
 <body>
     <a href='/' style="padding: 3%;">Home</a>
 
     <form method="POST">
+        <div>
+            <input type="radio" id="doctor" name="user" value="doctor" required>
+            <label for="doctor">I am a doctor</label>
+            <input type="radio" id="patient" name="user" value="patient" required>
+            <label for="patient">I am a patient</label>
+        </div>
         {% csrf_token %}
-        {{ form  }} <!--From froms.py (rendered in views.py)-->
+        {{ form }}
+        <!--From froms.py (rendered in views.py)-->
         <button type="submit">Log In</button>
     </form>
 
     <h2> {{ error }} </h2>
     <h3>If you don't have an account, please register!</h3>
     <button type="submit"><a style="text-decoration: none;" href="../register">Go To Register</a></button>
-    
+
 
 </body>
+
 </html>
