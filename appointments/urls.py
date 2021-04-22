@@ -4,9 +4,10 @@ from . import views
 # from .views import ViewAppointments, ViewCalendar
 
 urlpatterns = [
-    path('', views.ViewAppointments),
+    path('', views.doctorAppointments),
     path("booksystem/<int:doctorid>", views.BookAppointment),
-    path("booksystem/", views.BookAppointment, name = 'booker')
+    path("booksystem/", views.BookAppointment, name = 'booker'),
+    path("cancel/<int:appointmentid>",  views.cancelappointment),
     # path("calendar/<int:doctorid>",views.BookAppointment ),
 
 ]

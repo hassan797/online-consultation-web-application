@@ -46,8 +46,8 @@ class Appointmentform(forms.ModelForm):
     # patientId = forms.ModelChoiceField(queryset=models.Patient.objects.all().filter(status=True), to_field_name="user_id")
     class Meta:
         model = Appointment
-        fields = [  'doctorName', 'date', 'time', 'description']
+        fields = [  'doctorname', 'date', 'time', 'description']
         widgets = {
-            'date': forms.DateInput(attrs={'placeholder': 'yyyy-mm-dd'}),
-            'time' : forms.TimeInput()
+            'date': forms.DateInput(attrs={'placeholder': 'yyyy-mm-dd', 'type':'date'}),
+            'time' : forms.TimeInput(attrs={'type' : 'time'})
         }
