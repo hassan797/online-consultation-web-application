@@ -41,44 +41,12 @@ def loginuser(request):
 
 
 def logoutuser(request):
+    
     for i in list(request.session.keys()):
         del request.session[i]
     logout(request)
     return redirect("loginuser")
 
-
-def doctorAppointments( request):
-
-    #doctorid = request.session['id']
-    doctorID = 3
-    doctor =  Doctor.objects.get(pk = doctorID)
-    print("INFO here :" , doctor.firstname, doctor.lastname, doctor.mobile)
-
-    if request.method== 'POST':
-
-        if request.POST.get("action")== "confirm":
-            confirmAppointment(request)
-
-        elif request.POST.get("action")== "Cancel":                                  # if action is cancel
-            cancelappointment(request)
-
-    appointments = Appointment.objects.filter(doctor_id= doctorID, date__gte=datetime.today()).order_by('date')
-    print(len(appointments))
-    return render(request , 'listappointments.html' ,{'appointments' : appointments})
-
-
-
-
-
-
-def patientAppointments( request):
-
-    # patientid = request.session['id']
-    patientID = 1
-    patient =  Patient.objects.get(pk = patientID)
-    print("INFO here :" , patient.firstname, patient.lastname, patient.mobile)
-    appointments = Appointment.objects.filter(date__gte = datetime.today()).order_by('date')
-    return render(request , 'Appointments.html' ,{'appointments' : appointments})
 
 
 
@@ -119,10 +87,40 @@ def BookAppointment(request, dr_id) :
     return render(request, 'Bookappointment.html', {'form': form, 'drname': drname})
 
 
+def doctorAppointments(request):
+
+    # doctorID = request.session.get('id')
+    # doctor =  Doctor.objects.get(user_id = doctorID)
+    # print("INFO here :" , doctor.firstname, doctor.lastname, doctor.mobile)
+
+    if request.method== 'POST':
+
+        if request.POST.get("action")== "confirm":
+            confirmAppointment(request)
+
+        elif request.POST.get("action")== "Cancel":                                  # if action is cancel
+            cancelappointment(request)
+            
+    # date__gte=datetime.today()
+    appointments = Appointment.objects.filter(doctor_id= 3, ).order_by('date')
+    print(len(appointments))
+    return render(request , 'Appointments.html' ,{'appointments' : appointments})
+
+
+# Patient :  username = jana , pass = jana1234
+def patientAppointments( request):
+
+    # userID = request.session.get('id')
+    # patient =  Patient.objects.get(user_id = userID)
+    # print("INFO here :" , patient.firstname, patient.lastname, patient.mobile)
+    appointments = Appointment.objects.filter(patient_id = 1 , canceled = False ).order_by('date')
+    return render(request , 'Appointments.html' ,{'appointments' : appointments})
+
+
 def confirmAppointment(request) :
 
-    # doctorid = request.session['id']
-    doctorID = 1
+    doctorID = request.session['id']
+    # doctorID = 1
     appointmentid = request.POST.get('appid')
     appointment = Appointment.objects.get(pk = appointmentid)
     appointment.confirmed = True
@@ -131,6 +129,7 @@ def confirmAppointment(request) :
 
 
 def cancelappointment(request):
+
     # userid = request.session.get("userid")
     # appid = request.POST.get("appid")
     userid = 1
