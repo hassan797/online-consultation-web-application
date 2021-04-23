@@ -8,7 +8,7 @@ from django.template.context_processors import csrf
 
 from .forms import *
 from .models import Doctor, Patient, Appointment
-from datetime import datetime
+import datetime
 from django.utils import timezone
 # Create your views here.
 
@@ -66,9 +66,7 @@ def doctorAppointments( request):
     print(len(appointments))
     return render(request , 'listappointments.html' ,{'appointments' : appointments})
 
-# def edit_appointments(request):
 
-    # appointment =
 
 
 
@@ -84,41 +82,41 @@ def patientAppointments( request):
 
 
 
-def BookAppointment(request) :
+def BookAppointment(request, dr_id) :
 
     form = Appointmentform()
-    # drfname = Doctor.objects.filter(pk=doctorid)[0].firstname
-    # drlname = Doctor.objects.filter(pk=doctorid)[0].lastname
-    # name = drfname + " " + drlname
+    doctor = Doctor.objects.get(pk=dr_id)
+    drname = "Dr." + doctor.firstname+ " "+ doctor.lastname
     if request.method =='POST':
 
-        userid = 1
-        doctor_id = 1
-        date = request.POST.get('date')
-        time = request.POST.get('time')
+        userid = request.session.get('id')
+        print(userid)
+        doctor_id = dr_id
+
+        date1 = request.POST.get('date').split("-")
+        date = datetime.date(year= int(date1[0]), month= int(date1[1]),day=int(date1[2]))
+        time1 = request.POST.get('time').split(":")
+        time = datetime.time( int(time1[0]), int(time1[1]) )
+
+        print(" Date requested :", date,time)
         description = request.POST.get('description')
-        link = Doctor.objects.filter(id = doctor_id)
-        apppointment2 = Appointment(request.POST)
-        patient= Patient.objects.filter(pk = userid)[0]
-        doctor = Doctor.objects.filter(pk = doctor_id)[0]
-        apppointment2.patient = patient
-        apppointment2.doctor = doctor
-        apppointment2.patientname = patient.firstname +" " +patient.lastname
-        apppointment2.doctorname = "Dr. "+doctor.firstname +" " +doctor.lastname
-        apppointment2.save()
-        # apointment = models.Appointment.objects.create( patient = Patient.objects.filter(pk = userid),
-        #                                                 doctor= Doctor.objects.filter(pk = doctor_id),
-        #                                                 doctorname = name,
-        #                                                 date = date,
-        #                                                 time = time,
-        #                                                 description= description )
-        # apointment.save()
-        return HttpResponse("<h1> Your appointment has been succesfully booked !</h1>")
-    return render(request, 'Bookappointment.html', {'form': form, 'drname': 'ali assi'})
-    # return HttpResponse(form)
+        doctor = Doctor.objects.get( pk = doctor_id)
+        patient= Patient.objects.get(user_id = userid)
 
+        if time_isavailable(request, date, time, doctor_id):
+            apointment = Appointment.objects.create( patient = patient,
+                                                    doctor= doctor,
+                                                    patientname = patient.firstname +" " +patient.lastname,
+                                                    doctorname = "Dr. "+doctor.firstname +" " +doctor.lastname,
+                                                    date = date,
+                                                    time = time,
+                                                    description= description )
+            apointment.save()
+            return HttpResponse("<h1> Your appointment has been succesfully booked :) !</h1>")
+        else :
+            return HttpResponse("<h1> this time slot at that day is not available :( !</h1>")
 
-
+    return render(request, 'Bookappointment.html', {'form': form, 'drname': drname})
 
 
 def confirmAppointment(request) :
@@ -142,7 +140,24 @@ def cancelappointment(request):
     appointment.save()
 
 
+def time_isavailable(request, date, time, doctorid):
 
-def ViewCalendar(request, id):
+    if not (11 < time.hour < 21):
+        return False
+    appts = Appointment.objects.filter(doctor_id=doctorid, date=date).order_by('time')
+    print("appointments of doctor on %s : " % (str(date)), appts)
+    if len(appts) == 0:
+        return True
+    else:
+        for appointment in appts:
+            time2 = appointment.time
+            x = datetime.timedelta(hours=time2.hour, minutes=time2.minute, seconds=0)
+            y = datetime.timedelta(hours=time.hour, minutes=time.minute, seconds=0, )
+            t3 = y - x
+            delta_minutes = abs(t3.total_seconds() / 60)
+            if delta_minutes >= 60:
+                continue
+            elif delta_minutes < 60:
+                return False
+        return True
 
-    return render(request , 'Calendar.html' ,{ })
