@@ -3,9 +3,10 @@ Dear ${PERSON_NAME},
 
 This an automated message,
 This is to remind you of your appointment
-with Dr. ${DOCTOR} on ${DATE}
+with ${DOCTOR} on ${DATE}
 
-Please refer to the Doctor's account page for the meeting link
+Please access the meeting through the following link:
+${LINK}
 
 Yours Truly,
 E-health

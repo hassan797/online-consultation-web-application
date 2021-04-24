@@ -84,6 +84,7 @@ def BookAppointment(request, dr_id) :
                                                     time = time,
                                                     description= description )
             apointment.save()
+            send_reminder(request, apointment)
             return HttpResponse("<h1> Your appointment has been succesfully booked :) !</h1>")
         else :
             return HttpResponse("<h1> this time slot at that day is not available :( !</h1>")
@@ -174,25 +175,26 @@ def read_template(filename):
 
 
 
-def send_reminder(patient_userid, appointment) :
+def send_reminder(request, appointment) :
 
     doctor = appointment.doctorname
-    date = appointment.date + " "+ appointment.time
+    date = str(appointment.date) + " "+ str(appointment.time)
     name = appointment.patientname
-    email = User.objects.get(pk= patient_userid).email
+    email = User.objects.get(pk= request.session.get('id')).email
+    link = Doctor.objects.get(pk = appointment.doctor_id).zoom_link
 
-    pswrd = 'your_password'
+    pswrd = 'Triocili66'
 
     s = smtplib.SMTP(host='smtp.office365.com', port=587)
     s.starttls()
     s.login('hzc01@mail.aub.edu', pswrd )
-    message_template = read_template('mymessage.txt')
+    message_template = read_template('appointments/mymessage.txt')
 
     # for name, email in zip(names, emails):
     msg = MIMEMultipart()  # create a message
 
     # add in the actual person name to the message template
-    message = message_template.substitute(PERSON_NAME=name, DATE = date, DOCTOR = doctor )
+    message = message_template.substitute(PERSON_NAME=name, DATE = date, DOCTOR = doctor, LINK= link )
 
     # setup the parameters of the message
     msg['From'] = 'hzc01@mail.aub.edu'
