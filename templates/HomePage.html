@@ -116,6 +116,7 @@ input[type=submit]{
 
 {% if isloggedIn == 1 %} 
 <div class="header">
+    <a href="/account/">My account</a> &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
     <a href="logout" >logout</a>
 </div>
 {% else %}
@@ -148,14 +149,21 @@ input[type=submit]{
 
 <p class = second><b style="font-size: 35px;"> 100,000 + </b><br><b> patients trust our services </b></P>
 <br>
-<!-- WRONG!!
-<form  action="doctors" method="post" >
-            <input type="submit"  value="Book Appointment"  />
-            </form>
-</div> -->
-<a href="/account/">My account</a>
 
-<a class="btn btn-info btn-sm" href="/doctors">Book Appointment</a>
+{% if isloggedIn == 1 %}
+  <form  action="/listofdoctors" method="get" >
+    <input type="submit"  value="Book Appointment"  />
+  </form>
+{% else %}
+  <form  action="/register" method="get" >
+    <input type="submit"  value="Sign Up Now!"  />
+  </form>
+{% endif %}
+
+
+
+</div>
+
 
 <!-- right side -->
 {% load static %}

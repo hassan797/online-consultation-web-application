@@ -18,12 +18,10 @@ from django.urls import path
 from django.conf.urls import include, url
 
 urlpatterns = [
-
+    url(r'^', include('home.urls')),
     path('admin/', admin.site.urls),
     path('appointment/' , include('appointments.urls')) ,
     url(r'^', include('accountpage.urls')),
     url(r'^', include('listofdoctors.urls')),
-    url(r'^',include('home.urls')),
-
 
 ]
