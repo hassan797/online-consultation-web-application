@@ -183,7 +183,7 @@ def send_reminder(request, appointment) :
     email = User.objects.get(pk= request.session.get('id')).email
     link = Doctor.objects.get(pk = appointment.doctor_id).zoom_link
 
-    pswrd = 'Triocili66'
+    pswrd = 'password'
 
     s = smtplib.SMTP(host='smtp.office365.com', port=587)
     s.starttls()
