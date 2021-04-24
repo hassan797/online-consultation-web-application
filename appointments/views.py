@@ -59,6 +59,7 @@ def BookAppointment(request, dr_id) :
     form = Appointmentform()
     doctor = Doctor.objects.get(pk=dr_id)
     drname = "Dr." + doctor.firstname+ " "+ doctor.lastname
+
     if request.method =='POST':
 
         userid = request.session.get('id')
