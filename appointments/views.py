@@ -1,3 +1,7 @@
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from string import Template
 import django.http
 from django.shortcuts import render, redirect
 from django.contrib import messages
@@ -160,3 +164,45 @@ def time_isavailable(request, date, time, doctorid):
                 return False
         return True
 
+
+def read_template(filename):
+
+    with open(filename, 'r', encoding='utf-8') as template_file:
+        template_file_content = template_file.read()
+    return Template(template_file_content)
+
+
+
+
+def send_reminder(patient_userid, appointment) :
+
+    doctor = appointment.doctorname
+    date = appointment.date + " "+ appointment.time
+    name = appointment.patientname
+    email = User.objects.get(pk= patient_userid).email
+
+    pswrd = 'your_password'
+
+    s = smtplib.SMTP(host='smtp.office365.com', port=587)
+    s.starttls()
+    s.login('hzc01@mail.aub.edu', pswrd )
+    message_template = read_template('mymessage.txt')
+
+    # for name, email in zip(names, emails):
+    msg = MIMEMultipart()  # create a message
+
+    # add in the actual person name to the message template
+    message = message_template.substitute(PERSON_NAME=name, DATE = date, DOCTOR = doctor )
+
+    # setup the parameters of the message
+    msg['From'] = 'hzc01@mail.aub.edu'
+    msg['To'] = email
+    msg['Subject'] = 'E-health Care'
+
+    # add in the message body
+    msg.attach(MIMEText(message, 'plain'))
+
+    # send the message via the server set up earlier.
+    s.send_message(msg)
+
+    del msg

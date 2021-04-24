@@ -1,0 +1,11 @@
+
+Dear ${PERSON_NAME},
+
+This an automated message,
+This is to remind you of your appointment
+with Dr. ${DOCTOR} on ${DATE}
+
+Please refer to the Doctor's account page for the meeting link
+
+Yours Truly,
+E-health
