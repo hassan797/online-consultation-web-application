@@ -81,7 +81,11 @@ def HomePage(request):
         isloggedIn = 1
     else:
         isloggedIn = 0
+
     return render(request, 'HomePage.html', {'isloggedIn': isloggedIn})
+
+
+
 
 def register(request):
     

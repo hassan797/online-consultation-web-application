@@ -114,9 +114,10 @@ input[type=submit]{
 <img src="{% static 'css/logo.jpg' %}" alt="eHealth Logo"  width="250px" height="60px" style="padding: 20px 20px;">
 
 
-{% if isloggedIn == 1 %} 
+{% if isloggedIn == 1  %}
 <div class="header">
     <a href="/account/">My account</a> &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+     <a href="/appointment/">My Appointments</a> &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
     <a href="logout" >logout</a>
 </div>
 {% else %}
@@ -132,7 +133,12 @@ input[type=submit]{
 <div class="navbar" >
   <a href="/">Home</a>
   <a href="">About</a>
+
+{% if isloggedIn == 1 %}
   <a href="/listofdoctors">Doctors</a>
+{% else %}
+  <a href="login" >Doctors</a>
+{% endif %}
   <a href="">Contact us</a>
 </div>
 
@@ -146,15 +152,18 @@ input[type=submit]{
 <p class = second><b style="font-size: 35px;"> 100,000 + </b><br><b> patients trust our services </b></P>
 <br>
 
-{% if isloggedIn == 1 %}
-  <form  action="/listofdoctors" method="get" >
-    <input type="submit"  value="Book Appointment"  />
-  </form>
-{% else %}
-  <form  action="/register" method="get" >
-    <input type="submit"  value="Sign Up Now!"  />
-  </form>
-{% endif %}
+<!--{% if user_type == 0 %}-->
+  {% if isloggedIn == 1  %}
+    <form  action="/listofdoctors" method="get" >
+      <input type="submit"  value="Book Appointment"  />
+    </form>
+  {% else %}
+    <form  action="/register" method="get" >
+      <input type="submit"  value="Sign Up Now!"  />
+    </form>
+  {% endif %}
+<!--{% endif %}-->
+
 
 
 

@@ -14,15 +14,15 @@
 
                     <input type="hidden" name="appid" value="{{ appt.id }}">
 
-                    {% if appt.confirmed %}
-                        <strong> Confirmed</strong>
+<!--                    {% if appt.confirmed %}-->
+<!--                        <strong> Confirmed</strong>-->
                         {% if not appt.canceled %}
                             <input type="submit" name = "action" value="Cancel">
                         {% else %}
                             <strong> Canceled</strong>
                         {% endif %}
                     {% else %}
-                        <input type="submit" name = "action" value="confirm">
+<!--                        <input type="submit" name = "action" value="confirm">-->
                         {% if not appt.canceled %}
                             <input type="submit" name = "action" value="Cancel">
                         {% else %}

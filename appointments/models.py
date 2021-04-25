@@ -66,7 +66,7 @@ class Appointment(models.Model):
     date = models.DateField(null=True)
     time = models.fields.TimeField(null=True)
     description=models.TextField(max_length=500, null=True)
-    confirmed = models.BooleanField(default= False)
+    # confirmed = models.BooleanField(default= False)
     canceled = models.BooleanField(default= False)
 
     def __str__(self):
