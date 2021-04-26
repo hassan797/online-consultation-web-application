@@ -9,6 +9,7 @@
 
             {%  for appt in appointments %}
                 <form action="" method="POST">
+                <p><span> Please note that appointments are only allowed from 11:00 AM till 9:00 PM </span> </p>
                     {% csrf_token %}
                     <p>{{ appt.patientname }} With {{ appt.doctorname }} At {{ appt.date }} , {{ appt.time }}</p>
 
