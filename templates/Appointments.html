@@ -1,51 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+<meta charset="UTF-8">
+<title>My Appointments</title>
+<style type="text/css">
+
+input[type=submit]{
+  background-color: red;
+  border: none;
+  color: white;
+  padding: 8px 30px;
+  text-decoration: none;
+  margin: 1px 10px;
+  cursor: pointer;
+  font-weight:bold;
+
+}
+
+
+.row{
+font-size:17px;
+font-family: courier new;
+margin-top:50px;
+text-align:center;
+}
+</style>
 </head>
+
 <body>
-        <div>
 
-            {%  for appt in appointments %}
-                <form action="" method="POST">
-                    {% csrf_token %}
-                    <p>{{ appt.patientname }} With {{ appt.doctorname }} At {{ appt.date }} , {{ appt.time }}</p>
+<!-- Header -->
+ <h2 style="color:DeepSkyBlue; text-align:center;">My  Appointments</h2>
 
-                    <input type="hidden" name="appid" value="{{ appt.id }}">
 
-<!--                    {% if appt.confirmed %}-->
-<!--                        <strong> Confirmed</strong>-->
-                        {% if not appt.canceled %}
-                            <input type="submit" name = "action" value="Cancel">
-                        {% else %}
-                            <strong> Canceled</strong>
-                        {% endif %}
-                    {% else %}
-<!--                        <input type="submit" name = "action" value="confirm">-->
-                        {% if not appt.canceled %}
-                            <input type="submit" name = "action" value="Cancel">
-                        {% else %}
-                              <strong> Canceled</strong>
-                        {% endif %}
-                    {% endif %}
-                </form>
 
-            {% endfor %}
+<div>
 
-{#<div><#}
-{#{% for appointment in appointments %}#}
-{#  <li>#}
-{#    <div class="collapsible-header blue-grey"><i class="material-icons">assignment_turned_in</i>{{appointment.patientname}} with {{appointment.doctorname}} on {{appointment.time}}</div>#}
-{#    <div class="collapsible-body">#}
-{#      <span>Patient</span> <span class="blue-text text-lighten-1">{{appointment.patientname}} </span><br>#}
-{#      <span>Doctor</span> <span class="blue-text text-lighten-1">{{appointment.doctorname}} </span><br>#}
-{#      <span>Time</span> <span class="blue-text text-lighten-1">{{appointment.date }} , {{ appointment.time }}</span>#}
-{#      <span class="right-align"><a href="/appointments/change_appointment/{{appointment.id}}" class="btn-floating btn-large halfway-fab waves-effect waves-light red right-align"><i class="material-icons">mode_edit</i></a></span>#}
-{#    </div>#}
-{#  </li>#}
-{#  {% endfor %}#}
-{#</div>#}
+    {% for appt in appointments %}
+        <form action="" method="POST">
+            {% csrf_token %}
+             <b><p class="row"> {{ appt.date }}  {{ appt.time }}  &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;  Patient: {{ appt.patientname }}  &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;  Doctor:{{ appt.doctorname }}   </p></b>
+
+             <input type="hidden" name="appid" value="{{ appt.id }}">
+
+                {% if not appt.canceled %}
+                    <input type="submit" name = "action" value="Cancel">
+                {% else %}
+                    <strong> Canceled</strong>
+                {% endif %}
+
+        </form>
+        <hr style="height: 0.5px; background-color: lightblue; margin-bottom: 0%;">
+    {% endfor %}
+
 </div>
 </body>
 </html>
