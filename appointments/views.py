@@ -101,7 +101,7 @@ def doctorAppointments(request):
     try :
         doctorID = request.session.get('id')
         doctor =  Doctor.objects.get(user_id = doctorID)
-        print("INFO here :" , doctor.firstname, doctor.lastname, doctor.mobile)
+        # print("INFO here :" , doctor.firstname, doctor.lastname, doctor.mobile)
 
         if request.method== 'POST':
 
@@ -122,7 +122,7 @@ def patientAppointments( request):
 
     userID = request.session.get('id')
     patient =  Patient.objects.get(user_id = userID)
-    print("INFO here :" , patient.firstname, patient.lastname, patient.mobile)
+    # print("INFO here :" , patient.firstname, patient.lastname, patient.mobile)
     if request.method== 'POST':
 
           if request.POST.get("action")== "Cancel":                     # if action is cancel
