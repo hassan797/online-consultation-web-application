@@ -70,6 +70,7 @@ input[type=submit]:hover {
 
 
     <form method="POST">
+        <p style="color:blue "> Appointments are only available from 11 a.m. to 9 p.m. </p>
         {% csrf_token %}
         {% for inp in form %}
         <p>{{inp.label}}:</p>
