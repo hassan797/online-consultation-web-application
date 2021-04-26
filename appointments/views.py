@@ -228,7 +228,7 @@ def cancel_email(request, appointment) :
     name = appointment.patientname
     email1 = appointment.patient.user.email
     # email = User.objects.get(pk= request.session.get('id')).email
-    link = Doctor.objects.get(pk = appointment.doctor_id).zoom_link
+    # link = Doctor.objects.get(pk = appointment.doctor_id).zoom_link
 
     pswrd = 'Triocili66'
 
