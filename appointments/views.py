@@ -157,7 +157,7 @@ def cancelappointment(request):
 
 def time_isavailable(request, date, time, doctorid):
 
-    if not (11 < time.hour < 21):
+    if (not (11 < time.hour < 21 )) or (date < datetime.date.today()):
         return False
     appts = Appointment.objects.filter(doctor_id=doctorid, date=date, canceled=False).order_by('time')
     print("appointments of doctor on %s : " % (str(date)), appts)
