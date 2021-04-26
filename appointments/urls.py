@@ -9,4 +9,6 @@ urlpatterns = [
     # path("confirm/<int:appointmentid>", views.confirmAppointment),
     path("cancel/<int:appointmentid>",  views.cancelappointment),
     # path("calendar/<int:doctorid>",views.BookAppointment ),
+    path('viewappointments/', views.viewAppointments)
+
 ]

@@ -17,39 +17,39 @@ from django.utils import timezone
 # Create your views here.
 
 
-def signup(request):
-
-    form = UserForm()
-    if request.method == 'POST':
-        form = UserForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect("") # take user to home page
-    return render(request, "appointment/register.html", {'form': form})
-
-
-def loginuser(request):
-
-    print(request.user.username)
-    if request.method == "POST":
-        username = request.POST.get("username")
-        passwrd = request.POST.get("password")
-        member = User.objects.get(username=request.POST['username'])
-        if member.password== passwrd :
-            request.session['user_id'] = member.id
-            login(request, member)
-            return HttpResponseRedirect('')
-        else:
-            messages.info(request, "username or password is incorect")
-    return render(request, "")
+# def signup(request):
+#
+#     form = UserForm()
+#     if request.method == 'POST':
+#         form = UserForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             return redirect("") # take user to home page
+#     return render(request, "appointment/register.html", {'form': form})
 
 
-def logoutuser(request):
-    
-    for i in list(request.session.keys()):
-        del request.session[i]
-    logout(request)
-    return redirect("loginuser")
+# def loginuser(request):
+#
+#     print(request.user.username)
+#     if request.method == "POST":
+#         username = request.POST.get("username")
+#         passwrd = request.POST.get("password")
+#         member = User.objects.get(username=request.POST['username'])
+#         if member.password== passwrd :
+#             request.session['user_id'] = member.id
+#             login(request, member)
+#             return HttpResponseRedirect('')
+#         else:
+#             messages.info(request, "username or password is incorect")
+#     return render(request, "")
+
+
+# def logoutuser(request):
+#
+#     for i in list(request.session.keys()):
+#         del request.session[i]
+#     logout(request)
+#     return redirect("loginuser")
 
 
 
@@ -101,14 +101,11 @@ def doctorAppointments(request):
 
     if request.method== 'POST':
 
-        # if request.POST.get("action")== "confirm":
-        #     confirmAppointment(request)
-
           if request.POST.get("action")== "Cancel":                                  # if action is cancel
             cancelappointment(request)
             
     # date__gte=datetime.today()
-    appointments = Appointment.objects.filter(doctor_id= doctor.id, ).order_by('date')
+    appointments = Appointment.objects.filter(doctor_id= doctor.id).order_by('date')
     print(len(appointments))
     return render(request , 'Appointments.html' ,{'appointments' : appointments})
 
@@ -119,7 +116,12 @@ def patientAppointments( request):
     userID = request.session.get('id')
     patient =  Patient.objects.get(user_id = userID)
     print("INFO here :" , patient.firstname, patient.lastname, patient.mobile)
-    appointments = Appointment.objects.filter(patient_id = patient.id , canceled = False ).order_by('date')
+    if request.method== 'POST':
+
+          if request.POST.get("action")== "Cancel":                     # if action is cancel
+            cancelappointment(request)
+
+    appointments = Appointment.objects.filter(patient_id = patient.id ).order_by('date')
     return render(request , 'Appointments.html' ,{'appointments' : appointments})
 
 
@@ -209,3 +211,14 @@ def send_reminder(request, appointment) :
     s.send_message(msg)
 
     del msg
+
+
+def viewAppointments(request):
+
+    id = request.session.get('id')
+
+    if (Patient.objects.filter(user_id=id).exists()):
+        return patientAppointments(request)
+    elif Patient.objects.filter(user_id=id).exists():
+        return doctorAppointments(request)
+
