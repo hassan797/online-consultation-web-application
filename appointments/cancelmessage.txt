@@ -1,0 +1,13 @@
+
+
+Dear ${PERSON_NAME},
+
+This an automated message,
+This is to inform you that your appointment
+with ${DOCTOR} on ${DATE}
+
+was CANCELED
+you can always book another appointment
+
+Yours Truly,
+E-health

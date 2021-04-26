@@ -152,6 +152,7 @@ def cancelappointment(request):
     appointment = Appointment.objects.get(pk=appid)
     appointment.canceled = True
     appointment.save()
+    cancel_email(request, appointment)
 
 
 def time_isavailable(request, date, time, doctorid):
@@ -215,6 +216,37 @@ def send_reminder(request, appointment) :
     msg.attach(MIMEText(message, 'plain'))
 
     # send the message via the server set up earlier.
+    s.send_message(msg)
+
+    del msg
+
+def cancel_email(request, appointment) :
+
+    doctor = appointment.doctorname
+    date = str(appointment.date) + " "+ str(appointment.time)
+    name = appointment.patientname
+    email = User.objects.get(pk= request.session.get('id')).email
+    link = Doctor.objects.get(pk = appointment.doctor_id).zoom_link
+
+    pswrd = 'Triocili66'
+
+    s = smtplib.SMTP(host='smtp.office365.com', port=587)
+    s.starttls()
+    s.login('hzc01@mail.aub.edu', pswrd )
+    message_template = read_template('appointments/cancelmessage.txt')
+
+    # for name, email in zip(names, emails):
+    msg = MIMEMultipart()  # create a message
+
+    # add in the actual person name to the message template
+    message = message_template.substitute(PERSON_NAME=name, DATE = date, DOCTOR = doctor)
+
+    # setup the parameters of the message
+    msg['From'] = 'hzc01@mail.aub.edu'
+    msg['To'] = email
+    msg['Subject'] = 'E-healthcare Canceled appointment'
+
+    msg.attach(MIMEText(message, 'plain'))
     s.send_message(msg)
 
     del msg
