@@ -225,7 +225,8 @@ def cancel_email(request, appointment) :
     doctor = appointment.doctorname
     date = str(appointment.date) + " "+ str(appointment.time)
     name = appointment.patientname
-    email = User.objects.get(pk= request.session.get('id')).email
+    email1 = appointment.patient.user.email
+    # email = User.objects.get(pk= request.session.get('id')).email
     link = Doctor.objects.get(pk = appointment.doctor_id).zoom_link
 
     pswrd = 'Triocili66'
@@ -243,7 +244,7 @@ def cancel_email(request, appointment) :
 
     # setup the parameters of the message
     msg['From'] = 'hzc01@mail.aub.edu'
-    msg['To'] = email
+    msg['To'] = email1      #'am38.aub.edu.lb' for dr. moukallid mail
     msg['Subject'] = 'E-healthcare Canceled appointment'
 
     msg.attach(MIMEText(message, 'plain'))
