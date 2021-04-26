@@ -86,9 +86,9 @@ def BookAppointment(request, dr_id) :
                                                     description= description )
             apointment.save()
             send_reminder(request, apointment)
-            messages.success(request, 'Your appointment has been succesfully booked :) !')
+            messages.success(request, 'Your appointment has been successfully booked :) !')
         else :
-            messages.error(request, 'this time slot at that day is not available :( !')
+            messages.error(request, 'This time slot is not available, Please choose another one!')
 
     return render(request, 'Bookappointment.html', {'form': form, 'drname': drname})
 
