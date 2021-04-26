@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.template import loader
 from .forms import *
-from appointments.models import Doctor, Patient, Appointment
+from appointments.models import Doctor, Patient
 import bcrypt
 from django.contrib.auth.models import User
 from tkinter import *
@@ -181,16 +181,19 @@ def HomePage(request):
 def logout(request):
     request.session['id'] = None
     return redirect("/")
+'''
+def login(request):
+    if (User.objects.filter(email=request.POST['login_email']).exists()):
+        user = User.objects.filter(email=request.POST['login_email'])[0]
+        if (bcrypt.checkpw(request.POST['login_password'].encode(), user.password.encode())):
+            request.session['id'] = user.id
+            return redirect('/success')
+    return redirect('/')
 
-def billingReport(request):
-    if(request.session['user_type'] == '0'):
-        p = User.objects.get(id=request.session['id'])      
-        patient = Patient.objects.get(user=p)       
-        appoint = Appointment.objects.filter(patient=patient)
-        
-    elif (request.session['user_type'] == '1'):
-        p = User.objects.get(id=request.session['id'])
-        patient = Doctor.objects.get(user=p)
-        appoint = Appointment.objects.filter(doctor=patient)
-    
-    return render(request, 'billing.html', {'bills':appoint, 'usertype':int(request.session['user_type'])})
+def success(request):
+    user = User.objects.get(id=request.session['id'])
+    context = {
+        "user": user
+    }
+    return render(request, 'register/success.html', context)
+'''
