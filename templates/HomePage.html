@@ -135,7 +135,11 @@ input[type=submit]{
   <a href="">About</a>
 
 {% if isloggedIn == 1 %}
+  {% if usertype == 0 %}
   <a href="/listofdoctors">Doctors</a>
+  {% else %}
+  <a href="/listofpatients">Patients</a>
+{% endif %}
 {% else %}
   <a href="login" >Doctors</a>
 {% endif %}
