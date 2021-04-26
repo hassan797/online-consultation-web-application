@@ -43,6 +43,7 @@ def login(request):
                         request.session['id'] = user.id
                         request.session['user_type'] = "0"
                         return redirect("/")
+                        # return render(request, 'HomePage.html', {'user_type': "0"})
                 
                 print("Incorrect username or password")
                 form = Login() 
@@ -62,6 +63,7 @@ def login(request):
                         request.session['id'] = user.id
                         request.session['user_type'] = "1"
                         return redirect("/")
+                        # return render(request, 'HomePage.html', {'user_type': "1"})
                 
                 print("Incorrect username or password")
                 form = Login() 
@@ -75,13 +77,9 @@ def login(request):
     return render(request, 'login.html', {'form':form})
 
 
-def HomePage(request):
-    # print(request.session['id']) #ONLY WHEN LOGGEDIN OR SIGNEDUP
-    if(request.session['id'] != None):
-        isloggedIn = 1
-    else:
-        isloggedIn = 0
-    return render(request, 'HomePage.html', {'isloggedIn': isloggedIn})
+
+
+
 
 def register(request):
     
@@ -153,6 +151,29 @@ def register(request):
 
     #print("type of S:",type(S))
     return render(request, 'register.html', {'form': form,'S':S})
+
+
+
+
+
+def HomePage(request):
+    # print(request.session['id']) #ONLY WHEN LOGGEDIN OR SIGNEDUP
+    if(request.session['id'] != None):
+        isloggedIn = 1
+        if (request.session['user_type'] == "0"):
+            usertype = 0
+        else:
+            usertype = 1
+    else:
+        isloggedIn = 0
+        usertype = None
+
+
+
+    return render(request, 'HomePage.html', {'isloggedIn': isloggedIn , 'usertype': usertype})
+
+
+
 
 
 def logout(request):

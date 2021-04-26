@@ -59,6 +59,7 @@ def BookAppointment(request, dr_id) :
     form = Appointmentform()
     doctor = Doctor.objects.get(pk=dr_id)
     drname = "Dr." + doctor.firstname+ " "+ doctor.lastname
+
     if request.method =='POST':
 
         userid = request.session.get('id')
@@ -94,20 +95,20 @@ def BookAppointment(request, dr_id) :
 
 def doctorAppointments(request):
 
-    # doctorID = request.session.get('id')
-    # doctor =  Doctor.objects.get(user_id = doctorID)
-    # print("INFO here :" , doctor.firstname, doctor.lastname, doctor.mobile)
+    doctorID = request.session.get('id')
+    doctor =  Doctor.objects.get(user_id = doctorID)
+    print("INFO here :" , doctor.firstname, doctor.lastname, doctor.mobile)
 
     if request.method== 'POST':
 
-        if request.POST.get("action")== "confirm":
-            confirmAppointment(request)
+        # if request.POST.get("action")== "confirm":
+        #     confirmAppointment(request)
 
-        elif request.POST.get("action")== "Cancel":                                  # if action is cancel
+          if request.POST.get("action")== "Cancel":                                  # if action is cancel
             cancelappointment(request)
             
     # date__gte=datetime.today()
-    appointments = Appointment.objects.filter(doctor_id= 3, ).order_by('date')
+    appointments = Appointment.objects.filter(doctor_id= doctor.id, ).order_by('date')
     print(len(appointments))
     return render(request , 'Appointments.html' ,{'appointments' : appointments})
 
@@ -115,22 +116,22 @@ def doctorAppointments(request):
 # Patient :  username = jana , pass = jana1234
 def patientAppointments( request):
 
-    # userID = request.session.get('id')
-    # patient =  Patient.objects.get(user_id = userID)
-    # print("INFO here :" , patient.firstname, patient.lastname, patient.mobile)
-    appointments = Appointment.objects.filter(patient_id = 1 , canceled = False ).order_by('date')
+    userID = request.session.get('id')
+    patient =  Patient.objects.get(user_id = userID)
+    print("INFO here :" , patient.firstname, patient.lastname, patient.mobile)
+    appointments = Appointment.objects.filter(patient_id = patient.id , canceled = False ).order_by('date')
     return render(request , 'Appointments.html' ,{'appointments' : appointments})
 
 
-def confirmAppointment(request) :
-
-    doctorID = request.session['id']
-    # doctorID = 1
-    appointmentid = request.POST.get('appid')
-    appointment = Appointment.objects.get(pk = appointmentid)
-    appointment.confirmed = True
-    appointment.save()
-    print("Appointment confirmed !")
+# def confirmAppointment(request) :
+#
+#     doctorID = request.session['id']
+#     # doctorID = 1
+#     appointmentid = request.POST.get('appid')
+#     appointment = Appointment.objects.get(pk = appointmentid)
+#     appointment.confirmed = True
+#     appointment.save()
+#     print("Appointment confirmed !")
 
 
 def cancelappointment(request):
@@ -148,7 +149,7 @@ def time_isavailable(request, date, time, doctorid):
 
     if not (11 < time.hour < 21):
         return False
-    appts = Appointment.objects.filter(doctor_id=doctorid, date=date).order_by('time')
+    appts = Appointment.objects.filter(doctor_id=doctorid, date=date, canceled=False).order_by('time')
     print("appointments of doctor on %s : " % (str(date)), appts)
     if len(appts) == 0:
         return True
@@ -183,7 +184,7 @@ def send_reminder(request, appointment) :
     email = User.objects.get(pk= request.session.get('id')).email
     link = Doctor.objects.get(pk = appointment.doctor_id).zoom_link
 
-    pswrd = 'password'
+    pswrd = 'Triocili66'
 
     s = smtplib.SMTP(host='smtp.office365.com', port=587)
     s.starttls()

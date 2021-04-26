@@ -6,6 +6,7 @@
 </head>
 <body>
 <div>
+    <h2> Book an Appointment with {{ drname }}</h2>
     <form method="POST">
     {% csrf_token %}
         {% for inp in form %}
