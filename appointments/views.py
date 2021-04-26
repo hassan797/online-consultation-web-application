@@ -258,7 +258,7 @@ def viewAppointments(request):
 
     if (Patient.objects.filter(user_id=id).exists()):
         return patientAppointments(request)
-    elif Patient.objects.filter(user_id=id).exists():
+    elif Doctor.objects.filter(user_id=id).exists():
         return doctorAppointments(request)
 
     return redirect('/login/')
