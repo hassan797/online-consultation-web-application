@@ -14,4 +14,7 @@ class PatientForm(forms.ModelForm):
     class Meta:
         model = Patient
         fields = '__all__'
+        widgets = {
+            'date': forms.DateInput(attrs={'placeholder': 'dd-MM-YY', 'type': 'date'}),
+        }
 
