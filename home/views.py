@@ -186,11 +186,11 @@ def billingReport(request):
     if(request.session['user_type'] == '0'):
         p = User.objects.get(id=request.session['id'])      
         patient = Patient.objects.get(user=p)       
-        appoint = Appointment.objects.filter(patient=patient)
+        appoint = Appointment.objects.filter(patient=patient, canceled= False)
         
     elif (request.session['user_type'] == '1'):
         p = User.objects.get(id=request.session['id'])
         patient = Doctor.objects.get(user=p)
-        appoint = Appointment.objects.filter(doctor=patient)
+        appoint = Appointment.objects.filter(doctor=patient, canceled= False)
     
     return render(request, 'billing.html', {'bills':appoint, 'usertype':int(request.session['user_type'])})

@@ -56,58 +56,65 @@ from django.utils import timezone
 
 def BookAppointment(request, dr_id) :
 
-    form = Appointmentform()
-    doctor = Doctor.objects.get(pk=dr_id)
-    drname = "Dr." + doctor.firstname+ " "+ doctor.lastname
+    try :
+        form = Appointmentform()
+        doctor = Doctor.objects.get(pk=dr_id)
+        drname = "Dr." + doctor.firstname+ " "+ doctor.lastname
 
-    if request.method =='POST':
+        if request.method =='POST':
 
-        userid = request.session.get('id')
-        print(userid)
-        doctor_id = dr_id
+            userid = request.session.get('id')
+            print(userid)
+            doctor_id = dr_id
 
-        date1 = request.POST.get('date').split("-")
-        date = datetime.date(year= int(date1[0]), month= int(date1[1]),day=int(date1[2]))
-        time1 = request.POST.get('time').split(":")
-        time = datetime.time( int(time1[0]), int(time1[1]) )
+            date1 = request.POST.get('date').split("-")
+            date = datetime.date(year= int(date1[0]), month= int(date1[1]),day=int(date1[2]))
+            time1 = request.POST.get('time').split(":")
+            time = datetime.time( int(time1[0]), int(time1[1]) )
 
-        print(" Date requested :", date,time)
-        description = request.POST.get('description')
-        doctor = Doctor.objects.get( pk = doctor_id)
-        patient= Patient.objects.get(user_id = userid)
+            print(" Date requested :", date,time)
+            description = request.POST.get('description')
+            doctor = Doctor.objects.get( pk = doctor_id)
+            patient= Patient.objects.get(user_id = userid)
 
-        if time_isavailable(request, date, time, doctor_id):
-            apointment = Appointment.objects.create( patient = patient,
-                                                    doctor= doctor,
-                                                    patientname = patient.firstname +" " +patient.lastname,
-                                                    doctorname = "Dr. "+doctor.firstname +" " +doctor.lastname,
-                                                    date = date,
-                                                    time = time,
-                                                    description= description )
-            apointment.save()
-            send_reminder(request, apointment)
-            messages.success(request, 'Your appointment has been successfully booked :) !')
-        else :
-            messages.error(request, 'This time slot is not available, Please choose another one!')
+            if time_isavailable(request, date, time, doctor_id):
+                apointment = Appointment.objects.create( patient = patient,
+                                                        doctor= doctor,
+                                                        patientname = patient.firstname +" " +patient.lastname,
+                                                        doctorname = "Dr. "+doctor.firstname +" " +doctor.lastname,
+                                                        date = date,
+                                                        time = time,
+                                                        description= description )
+                apointment.save()
+                send_reminder(request, apointment)
+                messages.success(request, 'Your appointment has been successfully booked :) !')
+            else :
+                messages.error(request, 'This time slot is not available, Please choose another one!')
 
-    return render(request, 'Bookappointment.html', {'form': form, 'drname': drname})
+        return render(request, 'Bookappointment.html', {'form': form, 'drname': drname})
+    except :
+        return redirect('/login/')
 
 
 def doctorAppointments(request):
 
-    doctorID = request.session.get('id')
-    doctor =  Doctor.objects.get(user_id = doctorID)
-    print("INFO here :" , doctor.firstname, doctor.lastname, doctor.mobile)
+    try :
+        doctorID = request.session.get('id')
+        doctor =  Doctor.objects.get(user_id = doctorID)
+        print("INFO here :" , doctor.firstname, doctor.lastname, doctor.mobile)
 
-    if request.method== 'POST':
+        if request.method== 'POST':
 
-          if request.POST.get("action")== "Cancel":                                  # if action is cancel
-            cancelappointment(request)
-            
-    # date__gte=datetime.today()
-    appointments = Appointment.objects.filter(doctor_id= doctor.id).order_by('date')
-    print(len(appointments))
-    return render(request , 'Appointments.html' ,{'appointments' : appointments})
+              if request.POST.get("action")== "Cancel":                                  # if action is cancel
+                cancelappointment(request)
+
+        # date__gte=datetime.today()
+        appointments = Appointment.objects.filter(doctor_id= doctor.id).order_by('date')
+        print(len(appointments))
+        return render(request , 'Appointments.html' ,{'appointments' : appointments})
+
+    except :
+        return redirect('/login/')
 
 
 # Patient :  username = jana , pass = jana1234
@@ -222,3 +229,4 @@ def viewAppointments(request):
     elif Patient.objects.filter(user_id=id).exists():
         return doctorAppointments(request)
 
+    return redirect('/login/')
