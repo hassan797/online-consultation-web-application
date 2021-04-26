@@ -191,6 +191,7 @@ def send_reminder(request, appointment) :
     doctor = appointment.doctorname
     date = str(appointment.date) + " "+ str(appointment.time)
     name = appointment.patientname
+    email1 = appointment.patient.user.email
     email = User.objects.get(pk= request.session.get('id')).email
     link = Doctor.objects.get(pk = appointment.doctor_id).zoom_link
 
@@ -209,7 +210,7 @@ def send_reminder(request, appointment) :
 
     # setup the parameters of the message
     msg['From'] = 'hzc01@mail.aub.edu'
-    msg['To'] = email
+    msg['To'] = email1
     msg['Subject'] = 'E-health Care'
 
     # add in the message body
