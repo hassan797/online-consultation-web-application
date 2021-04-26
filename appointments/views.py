@@ -215,10 +215,12 @@ def send_reminder(request, appointment) :
 
 def viewAppointments(request):
 
-    id = request.session.get('id')
+    try :
+        id = request.session.get('id')
 
-    if (Patient.objects.filter(user_id=id).exists()):
-        return patientAppointments(request)
-    elif Patient.objects.filter(user_id=id).exists():
-        return doctorAppointments(request)
-
+        if (Patient.objects.filter(user_id=id).exists()):
+            return patientAppointments(request)
+        elif Patient.objects.filter(user_id=id).exists():
+            return doctorAppointments(request)
+    except :
+        return  redirect('/')
