@@ -37,11 +37,6 @@ class Patient(models.Model):
     chronic_deseases = models.CharField(max_length=100,null=True)
     unimmune_to = models.TextField(max_length=300, null= True)
     status = models.BooleanField(default=True)
-    date_of_birth = models.CharField(null= True, max_length=100)
-    weight = models.IntegerField(null= True)
-    current_medications = models.CharField(default= "None", max_length=500, null=True)
-    previous_surgeries = models.CharField(default="None", max_length=500, null=True)
-    allergies = models.CharField(default="None", max_length=500, null=True)
 
 
     def __str__(self):
