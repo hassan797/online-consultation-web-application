@@ -1,8 +1,8 @@
 from django.shortcuts import render
 
 from django.shortcuts import redirect #much better than return index(request) since No paramter collision
-from .forms import PatientForm, DoctorForm
-from .models import Doctor, Patient
+from .forms import forms, PatientForm, DoctorForm, UserForm
+from .models import  Doctor, Patient
 from django.contrib.auth.models import User
 # Create your views here.
 
@@ -19,9 +19,9 @@ def getUser(request): #Get user page with info to edit
 			p = User.objects.get(id=request.session['id'])
 			user = Doctor.objects.get(user=p)
 			form = DoctorForm(instance=user)
-			print("doctor: ", user)
+			# form= UserForm(instance=p)
+			# print("doctor: ", user)
 		elif (request.session['user_type']=='0'):
-
 			p = User.objects.get(id=request.session['id'])
 			user = Patient.objects.get(user=p)
 			form = PatientForm(instance=user)
@@ -30,17 +30,24 @@ def getUser(request): #Get user page with info to edit
 			return redirect('/')
 		# global doctorselected
 		# doctorselected=False
+		form.fields['status'].widget = forms.HiddenInput()
 
 		if request.method == 'POST': #Edit User (editUser)
-			if request.session['user_type']==1:
+			if request.session['user_type']=='1':
 				form = DoctorForm(request.POST, instance=user)
-			elif request.session['user_type']==0:
+			elif request.session['user_type']=='0':
 				form = PatientForm(request.POST, instance=user)
-			else:
-				return redirect('/')
+			# else:
+			# 	return redirect('/')
+			# user.save()
+			# p.save()
 			if form.is_valid():
 				form.save()
+				form.fields['status'].widget = forms.HiddenInput()
 				return render(request, 'account.html', {'form': form, 'id':request.session['id'], 'isdoctor':request.session['user_type'] } ) #NOTE: VARIABLES IN HTML CANNOT START WITH '_' SO NO "_id"
+			else:
+				print('form is not valid',form.errors, form.cleaned_data)
+				return render(request, 'account.html', {'form': form, 'id':request.session['id'], 'isdoctor':request.session['user_type'] } )
 
 		else: # See User data. Logically renders first since first accessed thorugh GET
 			return render(request, 'account.html', {'form': form, 'id':request.session['id'], 'isdoctor':request.session['user_type'] } )
@@ -57,14 +64,14 @@ def deleteUser(request): #API that renders back index
 			p = User.objects.get(id=request.session['id'])
 			user = Patient.objects.get(user=p)
 		else:
-			
 			return redirect('/')	
 
 		print("Deleting user")
 		user.delete()
 		p.delete()
+		request.session['id'] = None #sets isLoggedin=False in homepage
 	except:
 		print("Error happening deleting user")
 		pass
 
-	return redirect('/')
+	return redirect('/') #also returns updated request session params so good

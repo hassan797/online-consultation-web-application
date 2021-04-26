@@ -36,7 +36,7 @@ class Patient(models.Model):
     mobile = models.CharField(max_length=20,null= True)
     chronic_deseases = models.CharField(max_length=100,null=True)
     unimmune_to = models.TextField(max_length=300, null= True)
-    status = models.BooleanField(default=True)
+    status = models.BooleanField(default=False)
 
 
     def __str__(self):

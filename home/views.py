@@ -158,17 +158,19 @@ def register(request):
 
 def HomePage(request):
     # print(request.session['id']) #ONLY WHEN LOGGEDIN OR SIGNEDUP
-    if(request.session['id'] != None):
-        isloggedIn = 1
-        if (request.session['user_type'] == "0"):
-            usertype = 0
+    try:
+        if(request.session['id'] != None):
+            isloggedIn = 1
+            if (request.session['user_type'] == "0"):
+                usertype = 0
+            else:
+                usertype = 1
         else:
-            usertype = 1
-    else:
+            isloggedIn = 0
+            usertype = None
+    except:
         isloggedIn = 0
         usertype = None
-
-
 
     return render(request, 'HomePage.html', {'isloggedIn': isloggedIn , 'usertype': usertype})
 
