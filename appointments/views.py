@@ -101,14 +101,11 @@ def doctorAppointments(request):
 
     if request.method== 'POST':
 
-        # if request.POST.get("action")== "confirm":
-        #     confirmAppointment(request)
-
           if request.POST.get("action")== "Cancel":                                  # if action is cancel
             cancelappointment(request)
             
     # date__gte=datetime.today()
-    appointments = Appointment.objects.filter(doctor_id= doctor.id, date__gte= ).order_by('date')
+    appointments = Appointment.objects.filter(doctor_id= doctor.id).order_by('date')
     print(len(appointments))
     return render(request , 'Appointments.html' ,{'appointments' : appointments})
 
@@ -119,7 +116,12 @@ def patientAppointments( request):
     userID = request.session.get('id')
     patient =  Patient.objects.get(user_id = userID)
     print("INFO here :" , patient.firstname, patient.lastname, patient.mobile)
-    appointments = Appointment.objects.filter(patient_id = patient.id , canceled = False ).order_by('date')
+    if request.method== 'POST':
+
+          if request.POST.get("action")== "Cancel":                     # if action is cancel
+            cancelappointment(request)
+
+    appointments = Appointment.objects.filter(patient_id = patient.id ).order_by('date')
     return render(request , 'Appointments.html' ,{'appointments' : appointments})
 
 
