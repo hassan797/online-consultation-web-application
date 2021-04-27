@@ -232,7 +232,7 @@ def cancel_email(request, appointment) :
 
     pswrd = 'ehealthpass1'
 
-    s = smtplib.SMTP(host='smtp-mail.outlook.com', port=587)
+    s = smtplib.SMTP(host='smtp.office365.com', port=587)
     s.starttls()
     s.login('ehealth430@outlook.com', pswrd )
     message_template = read_template('appointments/cancelmessage.txt')
