@@ -1,3 +1,6 @@
 Django>=3.0.4
-django_filter>=2.4.0
+django_filter==2.4.0
+beautifultable==1.0.1
+pyodbc==4.0.30
+python_bcrypt==0.3.2
 bcrypt>=3.2.0
