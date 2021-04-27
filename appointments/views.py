@@ -195,11 +195,11 @@ def send_reminder(request, appointment) :
     # email = User.objects.get(pk= request.session.get('id')).email
     link = Doctor.objects.get(pk = appointment.doctor_id).zoom_link
 
-    pswrd = 'Triocili66'
+    pswrd = 'ehealthpass1'
 
     s = smtplib.SMTP(host='smtp.office365.com', port=587)
     s.starttls()
-    s.login('hzc01@mail.aub.edu', pswrd )
+    s.login('ehealth430@outlook.com', pswrd )
     message_template = read_template('appointments/mymessage.txt')
 
     # for name, email in zip(names, emails):
@@ -209,7 +209,7 @@ def send_reminder(request, appointment) :
     message = message_template.substitute(PERSON_NAME=name, DATE = date, DOCTOR = doctor, LINK= link )
 
     # setup the parameters of the message
-    msg['From'] = 'hzc01@mail.aub.edu'
+    msg['From'] = 'ehealth430@outlook.com'
     msg['To'] = email1      #'am38.aub.edu.lb' for dr. moukallid mail
     msg['Subject'] = 'E-health Care'
 
@@ -232,9 +232,9 @@ def cancel_email(request, appointment) :
 
     pswrd = 'Triocili66'
 
-    s = smtplib.SMTP(host='smtp.office365.com', port=587)
+    s = smtplib.SMTP(host='smtp-mail.outlook.com', port=587)
     s.starttls()
-    s.login('hzc01@mail.aub.edu', pswrd )
+    s.login('ehealth430@outlook.com', pswrd )
     message_template = read_template('appointments/cancelmessage.txt')
 
     # for name, email in zip(names, emails):
@@ -244,7 +244,7 @@ def cancel_email(request, appointment) :
     message = message_template.substitute(PERSON_NAME=name, DATE = date, DOCTOR = doctor)
 
     # setup the parameters of the message
-    msg['From'] = 'hzc01@mail.aub.edu'
+    msg['From'] = 'ehealth430@outlook.com'
     msg['To'] = email1      #'am38.aub.edu.lb' for dr. moukallid mail
     msg['Subject'] = 'E-healthcare Canceled appointment'
 
