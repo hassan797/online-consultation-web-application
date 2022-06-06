@@ -4,6 +4,7 @@ An online consultation system that supports Creating an account as a Doctor or P
 
 Install requirements by running `pip install -r requirements.txt`
 
+##### ESSENTIAL FILES ARE IN APPOINTMENTS FOLDER ####
 ### To run
 `python manage.py makemigrations`
 `python manage.py migrate`
